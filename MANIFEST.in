@@ -1,0 +1,18 @@
+include MANIFEST.in
+include requirements.txt
+include *.json
+include *.md
+include *.py
+include *.txt
+recursive-include custom_kecap *.css
+recursive-include custom_kecap *.csv
+recursive-include custom_kecap *.html
+recursive-include custom_kecap *.ico
+recursive-include custom_kecap *.js
+recursive-include custom_kecap *.json
+recursive-include custom_kecap *.md
+recursive-include custom_kecap *.png
+recursive-include custom_kecap *.py
+recursive-include custom_kecap *.svg
+recursive-include custom_kecap *.txt
+recursive-exclude custom_kecap *.pyc

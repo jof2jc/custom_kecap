@@ -1,0 +1,42 @@
+<h2 class="text-center">{%= __("Delivery Note Register") %}</h2>
+<h5 class="text-center">{%= __("Periode : ") %}
+	{%= frappe.datetime.str_to_user(filters.from_date) %}
+	{%= __("sd") %}
+	{%= frappe.datetime.str_to_user(filters.to_date) %}
+</h5>
+{% var grand_total = 0; %}
+
+<table class="table table-bordered">
+	<thead>
+		<tr style="border-top: 1px solid; border-bottom: 1px solid;">
+				<th>{%= __("No") %}</th>
+				<th>{%= __("Delivery Note No") %}</th>
+				<th>{%= __("Posting Date") %}</th>
+				<th>{%= __("Customer") %}</th>
+				<th>{%= __("Sales Person") %}</th>
+				<th>{%= __("Territory") %}</th>
+				<th>{%= __("SKU") %}</th>
+				<th>{%= __("Qty") %}</th>
+				<th>{%= __("UOM") %}</th>
+		</tr>
+	</thead>
+	<tbody>
+		{% for(var i=0, l=data.length; i<l; i++) { %}
+		{% if (i < data.length) { %}
+			<tr>
+					<td>{%= i+1 %}</td>
+					<td>{%= data[i][__("Delivery Note")] %}</td>
+					<td>{%= dateutil.str_to_user(data[i][__("Posting Date")]) %}</td>
+					<td>{%= data[i][__("Customer")] %}</td>
+					<td>{%= data[i][__("Sales Person")] %}</td>
+					<td>{%= data[i][__("Territory")] %}</td>
+					<td>{%= data[i][__("SKU")] %}</td>
+					<td style="text-align: right">
+						{%= data[i]["Qty"] %}</td>
+					<td>{%= data[i][__("UOM")] %}</td>
+			</tr>
+			{% grand_total += data[i]["Grand Total"] %}
+		{% } %}
+		{% } %}		
+	</tbody>
+</table>
