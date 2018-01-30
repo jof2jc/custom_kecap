@@ -29,7 +29,7 @@ def _execute(filters, additional_table_columns=None, additional_query_columns=No
 
 		row = [
 			inv.name, inv.posting_date, inv.status, inv.customer, inv.sales_person, inv.ar_status,inv.territory, inv.item_code,
-			inv.qty, inv.rate, inv.amount, (inv.amount-inv.outstanding_amount),
+			inv.qty, inv.price_list_rate, (inv.price_list_rate-inv.rate), inv.rate, inv.amount, #(inv.amount-inv.outstanding_amount),
 			inv.outstanding_amount
 		]
 
@@ -43,11 +43,12 @@ def get_columns(invoice_list, additional_table_columns):
 		_("Invoice") + ":Link/Sales Invoice:120", _("Posting Date") + ":Date:80", _("Status") + "::80",
 		_("Customer") + ":Link/Customer:120", _("Sales Person") + ":Link/Sales Person:100",
 		_("AR Status") + "::75", _("Territory") + ":Link/Territory:100",		
-		_("SKU") + ":Link/Item:100", _("Qty") + ":Float:50", _("Unit Price") + ":Currency/currency:120",
+		_("SKU") + ":Link/Item:100", _("Qty") + ":Float:50", _("Price List") + ":Currency/currency:120", 
+		_("Discount") + ":Currency/currency:120", _("Net Price") + ":Currency/currency:120",
 		_("Amount") + ":Currency/currency:120"
 		]
 
-	columns = columns + [_("Paid Amount") + ":Currency/currency:120", _("Outstanding Amount") + ":Currency/currency:120"]
+	columns = columns + [_("Outstanding Amount") + ":Currency/currency:120"]
 
 	return columns
 
@@ -69,8 +70,8 @@ def get_invoices(filters, additional_query_columns):
 		additional_query_columns = ', ' + ', '.join(additional_query_columns)
 
 	conditions = get_conditions(filters)
-	return frappe.db.sql("""select si.name, si.posting_date, si.status, si.customer, si.sales_person, si.ar_status, si.territory, it.item_code, it.qty,
-				it.rate, it.amount, si.outstanding_amount from `tabSales Invoice` si, `tabSales Invoice Item` it
+	return frappe.db.sql("""select si.name, si.posting_date, si.status, si.customer, si.sales_person, si.ar_status, si.territory, it.item_code, it.qty, 
+				it.price_list_rate, it.rate, it.amount, si.outstanding_amount from `tabSales Invoice` si, `tabSales Invoice Item` it
 				where it.parent=si.name and si.docstatus = 1 %s order by si.posting_date DESC, si.posting_time DESC""" % conditions, filters, as_dict=1)
 
 

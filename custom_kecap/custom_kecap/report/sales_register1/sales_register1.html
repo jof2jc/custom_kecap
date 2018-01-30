@@ -1,0 +1,40 @@
+<h2 class="text-left">{%= __("Sales Register / Rekap Penjualan") %}</h2>
+<h4 class="text-left">{%= filters.customer %} </h4>
+<h5 class="text-left">{%= __("Periode : ") %}
+	{%= frappe.datetime.str_to_user(filters.from_date) %}
+	{%= __("sd") %}
+	{%= frappe.datetime.str_to_user(filters.to_date) %}
+</h5>
+<hr>
+<table class="table table-bordered">
+	<thead>
+		<tr>
+				<th style="width: 20%">{%= __("Date") %}</th>
+				<th style="width: 20%">{%= __("Invoice No") %}</th>
+				<th style="width: 20%">{%= __("Customer") %}</th>
+				<th style="width: 20%">{%= __("Sales Person") %}</th>
+				<th style="width: 10%">{%= __("Gross Sales") %}</th>
+				<th style="width: 10%">{%= __("Net Sales") %}</th>
+		</tr>
+	</thead>
+	<tbody>
+		{% for(var i=0, l=data.length; i<l; i++) { %}
+			<tr>
+					<td>{%= frappe.datetime.str_to_user(data[i][__("Posting Date")]) %}</td>
+					<td>{%= data[i][__("Invoice")] %}</td>
+					<td>
+						{%= data[i][__("Customer")] %}
+							
+					</td>
+					<td>
+						{%= data[i][__("Sales Person")] %}
+							
+					</td>
+					<td style="text-align: right">
+						{%= data[i]["Net Total"].toLocaleString() %}</td>
+					<td style="text-align: right">
+						{%= data[i]["Grand Total"].toLocaleString() %}</td>
+			</tr>
+		{% } %}
+	</tbody>
+</table>
