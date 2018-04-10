@@ -24,13 +24,13 @@ def _execute(filters, additional_table_columns=None, additional_query_columns=No
 	company_currency = frappe.db.get_value("Company", filters.get("company"), "default_currency")
 
 	data = []
-	for inv in invoice_list:
+	for idx, inv in enumerate(invoice_list):
 		# invoice details
 
 		row = [
 			inv.name, inv.posting_date, inv.status, inv.customer, inv.sales_person, inv.ar_status,inv.territory, inv.item_code,
 			inv.qty, inv.price_list_rate, (inv.price_list_rate-inv.rate), inv.rate, inv.amount, #(inv.amount-inv.outstanding_amount),
-			inv.outstanding_amount
+			inv.outstanding_amount if invoice_list[idx-1].name != inv.name else 0.0 
 		]
 
 		data.append(row)

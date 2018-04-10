@@ -6,6 +6,7 @@ from frappe.utils import nowdate, now_datetime, flt, cstr, formatdate, get_datet
 from frappe.model.naming import make_autoname
 import json
 import datetime
+from frappe.model.rename_doc import rename_doc
 
 def sales_person_validate(self, method):
 	if not frappe.db.exists("Employee", self.name) and not self.employee:
@@ -23,7 +24,8 @@ def item_autoname(self, method):
 def customer_autoname(self, method):
 	abbr = frappe.db.get_value("Territory", self.territory, "abbr")
 	initial = self.customer_name[:1]
-	self.name = make_autoname(self.customer_name + '-' + abbr.upper() + '-' + initial.upper() +'.###')
+	self.name = self.customer_name + '-' + self.customer_full_name
+	#self.name = make_autoname(self.customer_name + '-' + abbr.upper() + '-' + initial.upper() +'.###')
 
 	"""
 	if self.customer_code.strip() != self.customer_name:
@@ -31,6 +33,12 @@ def customer_autoname(self, method):
 	else:
 		self.name = self.customer_code.strip().upper()
 	"""
+
+def customer_on_update(self, method):
+	#frappe.db.set(self, "name", self.customer_name + '-' + self.customer_full_name)
+	#frappe.set_route("Form", "Customer", self.name);
+	rename_doc(self.doctype, self.name, self.customer_name + '-' + self.customer_full_name)
+	frappe.msgprint(self.name)
 
 def get_notification_config():
 	return {

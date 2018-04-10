@@ -102,6 +102,7 @@ doc_events = {
     },
     "Customer": {
 	"autoname": "custom_kecap.custom_kecap.custom_kecap.customer_autoname"
+	#"on_update": "custom_kecap.custom_kecap.custom_kecap.customer_on_update"
     }
 }
 
